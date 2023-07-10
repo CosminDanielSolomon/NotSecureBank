@@ -93,4 +93,8 @@ public class User implements java.io.Serializable {
     public boolean hasGoldVisaDelivery() {
         return DBUtil.hasGoldVisaDelivery(username);
     }
+
+    public boolean isPreApprovedForGoldVisa() {
+        return DBUtil.isPreApprovedForGoldVisa(username);
+    }
 }
