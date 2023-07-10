@@ -12,11 +12,10 @@
     <td valign="top" colspan="3" class="bb">
 		<%		
 		java.lang.String content = request.getParameter("content");
-		if (content == null)
-			content = "default.htm";
+		if (content.matches("^[a-zA-Z0-9-]*$"))
+			content = "static/" + content;
 		else
-			content = request.getParameter("content");
-			content = "static/"+content;
+			content = "default.htm";
 		%>
 		
 		<%  try { %>
