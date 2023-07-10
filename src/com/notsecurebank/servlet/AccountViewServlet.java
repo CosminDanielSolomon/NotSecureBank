@@ -47,12 +47,20 @@ public class AccountViewServlet extends HttpServlet {
 
         // show transactions within the specified date range (if any)
         if (request.getRequestURL().toString().endsWith("showTransactions")) {
-            String startTime = request.getParameter("startDate");
-            String endTime = request.getParameter("endDate");
+            String startTime = sanitize(request.getParameter("startDate"));
+            String endTime = sanitize(request.getParameter("endDate"));
 
             LOG.info("Transactions within '" + startTime + "' and '" + endTime + "'.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/bank/transaction.jsp?" + ((startTime != null) ? "&startTime=" + startTime : "") + ((endTime != null) ? "&endTime=" + endTime : ""));
             dispatcher.forward(request, response);
         }
+    }
+
+    private String sanitize(String input) {
+        if (input == null) {
+            return null;
+        }
+        // Remove any characters that are not alphanumeric or whitespace
+        return input.replaceAll("[^\\w\\s]", "");
     }
 }
