@@ -18,6 +18,13 @@ public class OperationsUtil {
     private static final Logger LOG = LogManager.getLogger(OperationsUtil.class);
 
     public static String doTransfer(HttpServletRequest request, long creditActId, String accountIdString, double amount) {
+
+        // verify CSRF token
+        if (!ServletUtil.verifyCSRFToken(request)) {
+            LOG.error("CSRF token verification failed");
+            return "ERROR: CSRF token verification failed";
+        }
+
         LOG.debug("doTransfer(HttpServletRequest, " + creditActId + ", '" + accountIdString + "', " + amount + ")");
 
         long debitActId = 0;

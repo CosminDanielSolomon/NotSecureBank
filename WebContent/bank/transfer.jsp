@@ -36,6 +36,8 @@
 		<div class="fl" style="width: 99%;">
 		
 		<form id="tForm" name="tForm" method="post" action="doTransfer" onsubmit="return (confirminput(tForm));">
+
+		<input type="hidden" name="csrfToken" value="<%= ServletUtil.generateCSRFToken(request) %>">
 		
 		<h1>Transfer Funds</h1>
 		
