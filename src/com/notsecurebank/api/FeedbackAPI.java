@@ -46,6 +46,7 @@ public class FeedbackAPI extends NotSecureBankAPI {
         String comments;
 
         try {
+            // input validation and sanitization are performed
             name = validateAndSanitizeInput((String) myJson.get("name"));
             email = validateAndSanitizeInput((String) myJson.get("email"));
             subject = validateAndSanitizeInput((String) myJson.get("subject"));
