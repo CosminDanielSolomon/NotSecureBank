@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.annotation.security.RolesAllowed;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -73,17 +74,11 @@ public class AdminAPI extends NotSecureBankAPI {
     @POST
     @Path("/addUser")
     @Produces("application/json")
+    @RolesAllowed("admin")
     public Response addUser(String bodyJSON, @Context HttpServletRequest request) throws IOException {
         LOG.info("addUser");
 
         JSONObject bodyJson = new JSONObject();
-
-        // Checking if user is logged in
-
-        if (!ServletUtil.isLoggedin(request)) {
-            String response = "{\"loggedIn\" : \"false\"}";
-            return Response.status(400).entity(response).build();
-        }
 
         String firstname;
         String lastname;
