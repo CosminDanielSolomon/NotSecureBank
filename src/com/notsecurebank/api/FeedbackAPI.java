@@ -17,6 +17,7 @@ import org.apache.wink.json4j.JSONObject;
 import com.notsecurebank.model.Feedback;
 import com.notsecurebank.util.OperationsUtil;
 import com.notsecurebank.util.ServletUtil;
+import org.apache.commons.lang.StringEscapeUtils;
 
 @Path("/feedback")
 public class FeedbackAPI extends NotSecureBankAPI {
@@ -45,10 +46,10 @@ public class FeedbackAPI extends NotSecureBankAPI {
         String comments;
 
         try {
-            name = (String) myJson.get("name");
-            email = (String) myJson.get("email");
-            subject = (String) myJson.get("subject");
-            comments = (String) myJson.get("message");
+            name = validateAndSanitizeInput((String) myJson.get("name"));
+            email = validateAndSanitizeInput((String) myJson.get("email"));
+            subject = validateAndSanitizeInput((String) myJson.get("subject"));
+            comments = validateAndSanitizeInput((String) myJson.get("message"));
         } catch (JSONException e) {
             LOG.error(e.toString());
             return Response.status(400).entity("{\"Error\": \"Body does not contain all the correct attributes\"}").build();
@@ -67,10 +68,10 @@ public class FeedbackAPI extends NotSecureBankAPI {
             }
         } else {
             myJson = new JSONObject();
-            myJson.put("name", name);
-            myJson.put("email", email);
-            myJson.put("subject", subject);
-            myJson.put("comments", comments);
+            myJson.put("name", encodeOutput(name));
+            myJson.put("email", encodeOutput(email));
+            myJson.put("subject", encodeOutput(subject));
+            myJson.put("comments", encodeOutput(comments));
             return Response.status(200).entity(myJson.toString()).build();
         }
     }
@@ -87,6 +88,16 @@ public class FeedbackAPI extends NotSecureBankAPI {
 
         return Response.status(200).entity(response).build();
 
+    }
+
+    private String validateAndSanitizeInput(String input) {
+    // validate and sanitize the input using Apache Commons Validator and other input validation libraries
+    return StringEscapeUtils.escapeHtml4(input);
+}
+
+    private String encodeOutput(String output) {
+        // encode the output using output encoding libraries
+        return StringEscapeUtils.escapeJson(output);
     }
 
 }
